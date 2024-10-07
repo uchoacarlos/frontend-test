@@ -1,4 +1,3 @@
-// src/hooks/useWebSocket.ts
 import { useEffect, useRef } from 'react';
 
 interface UseWebSocketOptions {

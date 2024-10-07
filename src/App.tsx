@@ -1,4 +1,3 @@
-// src/App.tsx
 import React from "react";
 import { Card, Container, Typography } from "@mui/material";
 import SymbolSelector from "./components/SymbolSelector";

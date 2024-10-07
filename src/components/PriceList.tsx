@@ -1,4 +1,3 @@
-// src/components/PriceList.tsx
 import React, { useState, useCallback } from "react";
 import {
   Table,
@@ -23,13 +22,11 @@ interface PriceData {
   priceChangePercent: string;
 }
 
-// Função para formatar os preços com quatro casas decimais
 const formatPrice = (price: string) => {
   const num = parseFloat(price);
   return isNaN(num) ? "N/A" : num.toFixed(4);
 };
 
-// Função para formatar a variação percentual
 const formatPercentage = (percent: string) => {
   const num = parseFloat(percent);
   return isNaN(num) ? "N/A" : `${num.toFixed(2)}%`;
@@ -39,21 +36,18 @@ const PriceList: React.FC = () => {
   const { symbolsToWatch, removeSymbol } = useSymbols();
   const [prices, setPrices] = useState<PriceData[]>([]);
 
-  // Callback para tratar as mensagens recebidas pelo WebSocket
   const onMessage = useCallback(
     (event: MessageEvent) => {
       try {
         const data = JSON.parse(event.data);
         console.log("Data received from WebSocket:", data);
 
-        // Verifica se os dados têm o formato esperado
         if (data.stream && data.data) {
           const ticker = data.data;
 
-          // Verifica se é o evento correto de preço 24hr
           if (ticker.e === "24hrTicker") {
             setPrices((prev) => {
-              // Se o símbolo foi removido, não atualizamos o preço
+
               if (!symbolsToWatch.includes(ticker.s.toUpperCase())) {
                 return prev;
               }
@@ -91,7 +85,6 @@ const PriceList: React.FC = () => {
     [symbolsToWatch]
   );
 
-  // Constrói a URL do WebSocket com base nos símbolos selecionados
   const symbolStreams = symbolsToWatch.map(
     (symbol) => `${symbol.toLowerCase()}@ticker`
   );
@@ -99,17 +92,15 @@ const PriceList: React.FC = () => {
     ? `wss://stream.binance.com:9443/stream?streams=${symbolStreams.join("/")}`
     : "";
 
-  // Utiliza o hook useWebSocket para gerenciar a conexão
   useWebSocket(streamUrl, onMessage, {
     onError: (error) => console.error("WebSocket erro:", error),
     onClose: () => console.warn("WebSocket fechado."),
   });
 
-  // Função para lidar com a remoção do símbolo
   const handleRemoveSymbol = (symbol: string) => {
-    // Remove o símbolo da lista
+
     removeSymbol(symbol);
-    // Remove o preço correspondente àquele símbolo
+
     setPrices((prev) => prev.filter((price) => price.symbol !== symbol));
   };
 

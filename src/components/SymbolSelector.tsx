@@ -1,4 +1,3 @@
-// src/components/SymbolSelector.tsx
 import React, { useState, useEffect } from "react";
 import {
   Checkbox,
@@ -58,7 +57,6 @@ const SymbolSelector: React.FC = () => {
     setSelectedSymbols([]);
   };
 
-  // Filtra os símbolos conforme a pesquisa
   const filteredSymbols = symbols.filter((s) =>
     s.symbol.includes(search.toUpperCase())
   );
